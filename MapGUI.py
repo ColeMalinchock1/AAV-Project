@@ -4,7 +4,7 @@ import tkintermapview
 # create tkinter window
 root_tk = tkinter.Tk()
 root_tk.geometry(f"{1000}x{700}")
-root_tk.title("map_view_simple_example.py")
+root_tk.title("map_view.py")
 
 # Storing Markers
 waypoints = []
@@ -17,7 +17,7 @@ map_widget = tkintermapview.TkinterMapView(root_tk, width=1000, height=700, corn
 map_widget.pack(fill="both", expand=True)
 
 # set other tile server (standard is OpenStreetMap)
-map_widget.set_tile_server("https://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}&s=Ga", max_zoom=22)  # google satellite
+map_widget.set_tile_server("https://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}&s=Ga", max_zoom=22)  # google satellite
 
 # set current position and zoom
 map_widget.set_position(35.948987,-79.102532, marker=False)  # Chapel Hill, NC
@@ -25,6 +25,8 @@ map_widget.set_position(35.948987,-79.102532, marker=False)  # Chapel Hill, NC
 
 # set current position with address
 map_widget.set_address("Starting Location", marker=True)
+
+print(map_widget)
 
 # Adding markers
 def add_marker_event(coords):
