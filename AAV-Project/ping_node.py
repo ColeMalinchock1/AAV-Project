@@ -1,0 +1,1 @@
+# Reads the data from the ping and corrolates it to the current x y coordainte system to log it

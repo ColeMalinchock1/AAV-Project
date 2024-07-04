@@ -1,0 +1,1 @@
+# Receives the latitude and longitude point from the GPS
