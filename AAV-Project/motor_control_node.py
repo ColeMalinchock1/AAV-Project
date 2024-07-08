@@ -133,12 +133,28 @@ def main(args=None):
 
     rate = node.create_rate(20, node.get_clock())
 
+    # Initializes connected
+    connected = False
+
+    # Repeats display until serial is connected
+    while not connected:
+        try:
+            ser = serial.Serial('/dev/ttyACM0', 115200)
+            connected = True
+        except:
+            stdscr.refresh()
+
+            stdscr.addstr(1 , 5 , 'MOTOR CONTROL NODE')
+
+            stdscr.addstr(3, 5, 'Not Connected')    
+
+
     while rclpy.ok():
         
         # Checks if it is in mode 0 (manual) or mode 1 (auto)
         if mode == 0:
             throttle = manual_throttle
-            throttle = 90
+            throttle = 50
             steer = manual_steer
             str_mode = "Manual"
         elif mode == 1:
@@ -154,32 +170,23 @@ def main(args=None):
         # 0 = left, 90 = straight, 180 = right
         servo_steer = steer + 90
 
-        try:
-            # Tries to connect to the serial port
-            ser = serial.Serial('/dev/ttyTHS2', 115200)
-
-            # Checks if the serial was received and then sends throttle and steer
-            received_message = serial_receive(ser)
-            serial_send(ser, pwm_throttle, servo_steer)
-            connected = True
-
-        except serial.SerialException:
-            connected = False
+        # Checks if the serial was received and then sends throttle and steer
+        received_message = serial_receive(ser)
+        serial_send(ser, pwm_throttle, servo_steer)
 
         # Display of all the important messages
         stdscr.refresh()
         stdscr.addstr(1 , 5 , 'MOTOR CONTROL NODE')
 
         stdscr.addstr(3, 5, 'Mode: %s                 ' % str_mode)
-        stdscr.addstr(4, 5, 'Connected: %s                 ' % str(connected))
 
-        stdscr.addstr(6, 5, 'Manual Throttle: %d                 ' % manual_throttle)
-        stdscr.addstr(7, 5, 'Manual Steer: %d                 ' % manual_steer)
+        stdscr.addstr(5, 5, 'Manual Throttle: %d                 ' % manual_throttle)
+        stdscr.addstr(6, 5, 'Manual Steer: %d                 ' % manual_steer)
 
-        stdscr.addstr(9, 5, 'Auto Throttle: %d                 ' % auto_throttle)
-        stdscr.addstr(10, 5, 'Auto Steer: %d                 ' % auto_steer)
+        stdscr.addstr(8, 5, 'Auto Throttle: %d                 ' % auto_throttle)
+        stdscr.addstr(9, 5, 'Auto Steer: %d                 ' % auto_steer)
 
-        stdscr.addstr(12, 5, 'Received Message: %s                 ' % received_message)
+        stdscr.addstr(11, 5, 'Received Message: %s                 ' % received_message)
 
         rate.sleep()
 
