@@ -1,3 +1,5 @@
-# Class used to transmit RF to and from the boat.
-# Sends waypoints for it to go to
-# Receives current location and any other important information
+# Use pyrf24 https://pypi.org/project/pyrf24/
+
+import time
+from RF24 import RF24, RPI_V2_GPIO, RF24_PA_LOW
+
